@@ -1,5 +1,4 @@
-sfm_output/
-extracted_frames/
+output/
 gsplat_light/.idea
 gsplat_light/outputs
 gsplat_light/camera_paths
