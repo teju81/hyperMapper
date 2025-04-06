@@ -1,0 +1,189 @@
+# lightning.pytorch==2.3.3
+seed_everything: 42
+trainer:
+  accelerator: gpu
+  strategy: auto
+  devices: 1
+  num_nodes: 1
+  precision: null
+  logger:
+    class_path: lightning.pytorch.loggers.TensorBoardLogger
+    init_args:
+      save_dir: /home/doer/git/gaussian-splatting-lightning/outputs/spotless_watchtower
+  callbacks: null
+  fast_dev_run: false
+  max_epochs: null
+  min_epochs: null
+  max_steps: 30000
+  min_steps: null
+  max_time: null
+  limit_train_batches: null
+  limit_val_batches: null
+  limit_test_batches: null
+  limit_predict_batches: null
+  overfit_batches: 0.0
+  val_check_interval: null
+  check_val_every_n_epoch: 1
+  num_sanity_val_steps: 1
+  log_every_n_steps: null
+  enable_checkpointing: false
+  enable_progress_bar: null
+  enable_model_summary: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: null
+  gradient_clip_algorithm: null
+  deterministic: null
+  benchmark: null
+  inference_mode: true
+  use_distributed_sampler: false
+  profiler: null
+  detect_anomaly: false
+  barebones: false
+  plugins: null
+  sync_batchnorm: false
+  reload_dataloaders_every_n_epochs: 0
+  default_root_dir: null
+model:
+  light_gaussian:
+    prune_steps: []
+    prune_decay: 1.0
+    prune_percent: 0.66
+    prune_type: v_important_score
+    v_pow: 0.1
+  gaussian:
+    class_path: internal.models.vanilla_gaussian.VanillaGaussian
+    init_args:
+      sh_degree: 3
+      optimization:
+        means_lr_init: 0.00016
+        means_lr_scheduler:
+          class_path: internal.schedulers.ExponentialDecayScheduler
+          init_args:
+            lr_pre_warmup: 1.0e-08
+            lr_final: 1.6e-06
+            warmup_steps: 0
+            max_steps: 30000
+            ramp: cosine
+        spatial_lr_scale: -1.0
+        shs_dc_lr: 0.0025
+        shs_rest_lr: 0.000125
+        opacities_lr: 0.05
+        scales_lr: 0.005
+        rotations_lr: 0.001
+        sh_degree_up_interval: 1000
+        optimizer:
+          class_path: internal.optimizers.Adam
+  background_color:
+  - 0.0
+  - 0.0
+  - 0.0
+  random_background: false
+  output_path: /home/doer/git/gaussian-splatting-lightning/outputs/spotless_watchtower
+  save_val_output: false
+  save_val_metrics: null
+  max_save_val_output: -1
+  renderer:
+    class_path: internal.renderers.gsplat_renderer.GSPlatRenderer
+    init_args:
+      block_size: 16
+      anti_aliased: true
+      kernel_size: 0.3
+  metric:
+    class_path: internal.metrics.spotless_metrics.SpotLessMetrics
+    init_args:
+      lambda_dssim: 0.0
+      rgb_diff_loss: l1
+      lpips_net_type: alex
+      fused_ssim: false
+      lower_bound: 0.5
+      upper_bound: 0.9
+      bin_size: 10000
+      cluster: false
+      schedule: true
+      schedule_beta: -0.003
+      reset_sh: 8002
+      robust_percentile: 0.7
+      max_mlp_mask_size: 800
+      opacity_reg: 0.0
+      densify_until_iter: 15000
+      n_feature_dims: 1280
+  density:
+    class_path: internal.density_controllers.vanilla_density_controller.VanillaDensityController
+    init_args:
+      percent_dense: 0.01
+      densification_interval: 100
+      opacity_reset_interval: 999999999
+      densify_from_iter: 500
+      densify_until_iter: 15000
+      densify_grad_threshold: 0.0002
+      cull_opacity_threshold: 0.005
+      cull_by_max_opacity: false
+      camera_extent_factor: 1.0
+      scene_extent_override: -1.0
+      absgrad: false
+  save_ply: false
+  web_viewer: false
+  initialize_from: null
+  renderer_output_types: null
+data:
+  path: /home/doer/git/sfm_project/pycolmap_sfm/output/mvs/
+  parser:
+    class_path: internal.dataparsers.spotless_colmap_dataparser.SpotLessColmap
+    init_args:
+      image_dir: null
+      mask_dir: null
+      split_mode: reconstruction
+      eval_image_select_mode: step
+      eval_step: 8
+      eval_ratio: 0.01
+      eval_list: null
+      scene_scale: 1.0
+      reorient: false
+      appearance_groups: null
+      image_list: null
+      down_sample_factor: 1
+      down_sample_rounding_mode: round
+      points_from: sfm
+      ply_file: null
+      n_random_points: 100000
+      force_pinhole: false
+      semantic_feature_dir: SD
+      train_keyword: clutter
+      test_keyword: extra
+      cluster: false
+  distributed: false
+  undistort_image: false
+  val_on_train: false
+  image_scale_factor: 1.0
+  train_max_num_images_to_cache: -1
+  val_max_num_images_to_cache: -1
+  test_max_num_images_to_cache: -1
+  num_workers: 2
+  add_background_sphere: false
+  background_sphere_center: points
+  background_sphere_distance: 2.2
+  background_sphere_points: 204800
+  background_sphere_color: random
+  background_sphere_min_altitude: -.inf
+  camera_on_cpu: false
+  image_on_cpu: true
+  image_uint8: false
+  async_caching: false
+  allow_mask_interpolation: false
+max_steps: null
+max_epochs: null
+name: spotless_watchtower
+version: null
+save_iterations:
+- 7000
+- 30000
+logger: tensorboard
+project: Gaussian-Splatting
+output: /home/doer/git/gaussian-splatting-lightning/outputs
+float32_matmul_precision: null
+viewer: false
+save_val: false
+val_train: false
+cache_all_images: false
+pbar_rate: null
+ckpt_path: null

@@ -1,0 +1,1 @@
+Namespace(sh_degree=3, white_background=False, source_path='/home/doer/git/sfm_project/pycolmap_sfm/output/mvs/', images='images', eval=True, resolution=1, data_device='cpu')

@@ -1,0 +1,144 @@
+add_background_sphere: false
+allow_mask_interpolation: false
+async_caching: false
+background_color: !!python/tuple
+- 0.0
+- 0.0
+- 0.0
+background_sphere_center: points
+background_sphere_color: random
+background_sphere_distance: 2.2
+background_sphere_min_altitude: -.inf
+background_sphere_points: 204800
+camera_on_cpu: false
+density: !!python/object:internal.density_controllers.vanilla_density_controller.VanillaDensityController
+  absgrad: false
+  camera_extent_factor: 1.0
+  cull_by_max_opacity: false
+  cull_opacity_threshold: 0.005
+  densification_interval: 100
+  densify_from_iter: 500
+  densify_grad_threshold: 0.0002
+  densify_until_iter: 15000
+  opacity_reset_interval: 999999999
+  percent_dense: 0.01
+  scene_extent_override: -1.0
+distributed: false
+gaussian: !!python/object:internal.models.vanilla_gaussian.VanillaGaussian
+  optimization: !!python/object:internal.models.vanilla_gaussian.OptimizationConfig
+    means_lr_init: 0.00016
+    means_lr_scheduler: !!python/object:internal.schedulers.ExponentialDecayScheduler
+      lr_final: 1.6e-06
+      lr_pre_warmup: 1.0e-08
+      max_steps: 30000
+      ramp: cosine
+      warmup_steps: 0
+    opacities_lr: 0.05
+    optimizer: !!python/object:internal.optimizers.Adam {}
+    rotations_lr: 0.001
+    scales_lr: 0.005
+    sh_degree_up_interval: 1000
+    shs_dc_lr: 0.0025
+    shs_rest_lr: 0.000125
+    spatial_lr_scale: -1.0
+  sh_degree: 3
+image_on_cpu: true
+image_scale_factor: 1.0
+image_uint8: false
+initialize_from: null
+light_gaussian: !!python/object:internal.configs.light_gaussian.LightGaussian
+  prune_decay: 1.0
+  prune_percent: 0.66
+  prune_steps: []
+  prune_type: v_important_score
+  v_pow: 0.1
+max_save_val_output: -1
+metric: !!python/object:internal.metrics.spotless_metrics.SpotLessMetrics
+  bin_size: 10000
+  cluster: true
+  densify_until_iter: 15000
+  fused_ssim: false
+  lambda_dssim: 0.0
+  lower_bound: 0.5
+  lpips_net_type: alex
+  max_mlp_mask_size: 800
+  n_feature_dims: 1280
+  opacity_reg: 0.0
+  reset_sh: 8002
+  rgb_diff_loss: l1
+  robust_percentile: 0.7
+  schedule: true
+  schedule_beta: -0.003
+  upper_bound: 0.9
+num_workers: 2
+output_path: /home/doer/git/gaussian-splatting-lightning/outputs/spotless_watchtower
+parser: !!python/object:internal.dataparsers.spotless_colmap_dataparser.SpotLessColmap
+  appearance_groups: null
+  cluster: true
+  down_sample_factor: 1
+  down_sample_rounding_mode: round
+  eval_image_select_mode: step
+  eval_list: null
+  eval_ratio: 0.01
+  eval_step: 8
+  force_pinhole: false
+  image_dir: null
+  image_list: null
+  mask_dir: null
+  n_random_points: 100000
+  ply_file: null
+  points_from: sfm
+  reorient: false
+  scene_scale: 1.0
+  semantic_feature_dir: SD
+  split_mode: reconstruction
+  test_keyword: extra
+  train_keyword: clutter
+path: /home/doer/git/sfm_project/pycolmap_sfm/output/mvs/
+random_background: false
+renderer: !!python/object:internal.renderers.gsplat_renderer.GSPlatRenderer
+  _backward_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _backward_pre_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _buffers: !!python/object/apply:collections.OrderedDict
+  - []
+  _forward_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _forward_hooks_with_kwargs: !!python/object/apply:collections.OrderedDict
+  - []
+  _forward_pre_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _forward_pre_hooks_with_kwargs: !!python/object/apply:collections.OrderedDict
+  - []
+  _is_full_backward_hook: null
+  _load_state_dict_post_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _load_state_dict_pre_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _modules: !!python/object/apply:collections.OrderedDict
+  - []
+  _non_persistent_buffers_set: !!set {}
+  _parameters: !!python/object/apply:collections.OrderedDict
+  - []
+  _state_dict_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  _state_dict_pre_hooks: !!python/object/apply:collections.OrderedDict
+  - []
+  anti_aliased: true
+  block_size: 16
+  filter_2d_kernel_size: 0.3
+  training: true
+renderer_output_types: null
+save_iterations:
+- 7000
+- 30000
+save_ply: false
+save_val_metrics: null
+save_val_output: false
+test_max_num_images_to_cache: -1
+train_max_num_images_to_cache: -1
+undistort_image: false
+val_max_num_images_to_cache: -1
+val_on_train: false
+web_viewer: false
