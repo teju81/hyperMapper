@@ -33,10 +33,10 @@ def sfm_pipeline(video_path, image_dir, output_path, fps):
 def main():
     parser = argparse.ArgumentParser(description="Run COLMAP Structure-from-Motion pipeline using PyCOLMAP.")
     
-    parser.add_argument("--video_path", type=str, help="Path to the input video file.", default="watchtower.mp4")
+    parser.add_argument("--video_path", type=str, help="Path to the input video file.", default="swapnanil.mp4")
     parser.add_argument("--image_dir", type=str, help="Directory to save extracted frames.", default="output/extracted_frames")
     parser.add_argument("--output_path", type=str, help="Path to store SfM results.", default="output")
-    parser.add_argument("--fps", type=int, help="Frames per second for extraction.", default=1)
+    parser.add_argument("--fps", type=int, help="Frames per second for extraction.", default=7)
     args = parser.parse_args()
 
     image_dir = pathlib.Path(args.image_dir)
@@ -51,7 +51,9 @@ def main():
 
     if not os.path.exists(sd_args.output):
         extract_sd_features(args=sd_args)
-    gspl_pipeline(args=custom_args)
+    if not os.path.exists("/home/doer/hyperMapper/gsplat_light/outputs/" + custom_args[8]):
+        print("Running GSPL Pipeline")
+        gspl_pipeline(args=custom_args)
 
 if __name__ == "__main__":
     main()

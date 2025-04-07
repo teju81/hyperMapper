@@ -28,7 +28,8 @@ def run_sfm(image_dir: pathlib.Path, output_path: pathlib.Path, use_gpu: bool = 
     else:
        print("Already reconstructed. Loading reconstruction!")
     
-    pycolmap.undistort_images(mvs_path, output_path, image_dir)
+    if not os.path.exists(output_path / "mvs" / "images"):
+        pycolmap.undistort_images(mvs_path, output_path, image_dir)
     if is_dense:
         pycolmap.patch_match_stereo(mvs_path)  # requires compilation with CUDA
         pycolmap.stereo_fusion(mvs_path / "dense.ply", mvs_path)
