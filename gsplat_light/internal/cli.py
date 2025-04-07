@@ -43,7 +43,7 @@ class CLI(LightningCLI):
             "outputs",
         ), help="the base directory of the output")
         parser.add_argument("--float32_matmul_precision", "-f", type=Optional[Literal["medium", "high", "highest"]], default=None)
-        parser.add_argument("--viewer", action="store_true", default=False)
+        parser.add_argument("--viewer", action="store_true", default=True)
         parser.add_argument("--save_val", action="store_true", default=False,
                             help="Whether save images rendered during validation/test to files")
         parser.add_argument("--val_train", action="store_true", default=False,
