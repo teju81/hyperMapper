@@ -1,0 +1,12 @@
+model:
+  gaussian:
+    class_path: internal.models.vanilla_gaussian.VanillaGaussian
+    init_args:
+      lambda_dssim: 0.2
+      num_points: 20000
+      sh_degree: 3
+optimizer:
+  lr: 0.001
+trainer:
+  batch_size: 4
+  max_epochs: 50
