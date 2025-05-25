@@ -1,0 +1,54 @@
+# Video Processing Configuration
+video:
+  input_path: "swapnanil.mp4"
+  fps: 10
+
+# Directory Configuration
+directories:
+  image_dir: "output/extracted_frames"
+  output_dir: "output"
+  mvs_dir: "output/mvs"
+  sd_features_dir: "output/mvs/SD"
+
+# Point Cloud Processing
+pointcloud:
+  # Statistical Outlier Removal (SOR) parameters
+  sor:
+    nb_neighbors: 5000
+    std_ratio: 0.1
+    device: "cuda"
+    batch_size: 1000
+  
+  # Visualization settings
+  visualization:
+    window_name: "Sparse Point Cloud"
+    window_width: 1280
+    window_height: 720
+    zoom_level: 0.8
+    camera:
+      front: [0, 0, -1]
+      lookat: [0, 0, 0]
+      up: [0, -1, 0]
+
+# GSPL Pipeline Configuration
+gspl:
+  args:
+    - "fit"
+    - "--config"
+    - "gsplat_light/configs/spot_less_splats/gsplat-cluster.yaml"
+    - "--data.parser.split_mode"
+    - "reconstruction"
+    - "--data.path"
+    - "output/mvs"
+    - "-n"
+    - "spotless_watchtower"
+    - "--trainer.max_epochs"
+    - "10"
+    - "--viewer"
+
+# Processing Flags
+flags:
+  view_pointcloud: false
+  save_pointcloud: true
+  filter_pointcloud: true
+  is_dense: false 
