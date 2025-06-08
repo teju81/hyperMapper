@@ -1,14 +1,14 @@
 # Video Processing Configuration
 video:
-  input_path: "swapnanil.mp4"
-  fps: 2
+  input_path: "swapnanil.mp4" #"/root/code/datasets/tanks_and_temples/videos/Courtroom/Courtroom.mp4"
+  fps: 2 # extract every n-th frame in the video or in other words divide video frame rate by this value
 
 # Directory Configuration
 directories:
-  image_dir: "output/extracted_frames"
-  output_dir: "output"
-  mvs_dir: "output/mvs"
-  sd_features_dir: "output/mvs/SD"
+  image_dir: "/root/code/output/extracted_frames"
+  output_dir: "/root/code/output/colmap_output"
+  # mvs_dir: "output/mvs"
+  # sd_features_dir: "output/mvs/SD"
 
 # Point Cloud Processing
 pointcloud:
@@ -30,25 +30,25 @@ pointcloud:
       lookat: [0, 0, 0]
       up: [0, -1, 0]
 
-# GSPL Pipeline Configuration
-gspl:
-  args:
-    - "fit"
-    - "--config"
-    - "gsplat_light/configs/spot_less_splats/gsplat-cluster.yaml"
-    - "--data.parser.split_mode"
-    - "reconstruction"
-    - "--data.path"
-    - "output/mvs"
-    - "-n"
-    - "spotless_watchtower"
-    - "--trainer.max_epochs"
-    - "6"
-    - "--viewer"
+# # GSPL Pipeline Configuration
+# gspl:
+#   args:
+#     - "fit"
+#     - "--config"
+#     - "gsplat_light/configs/spot_less_splats/gsplat-cluster.yaml"
+#     - "--data.parser.split_mode"
+#     - "reconstruction"
+#     - "--data.path"
+#     - "output/mvs"
+#     - "-n"
+#     - "spotless_watchtower"
+#     - "--trainer.max_epochs"
+#     - "6"
+#     - "--viewer"
 
 # Processing Flags
 flags:
-  view_pointcloud: false
+  view_pointcloud: true
   save_pointcloud: true
   filter_pointcloud: true
-  is_dense: false 
+  is_dense: true
