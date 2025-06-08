@@ -6,11 +6,11 @@ import os
 import yaml
 import sys
 
-sys.path.append('gsplat_light')
-from internal.entrypoints.gspl import cli as gspl_pipeline
-sys.path.append('gsplat_light/utils')
-from utils.sd_feature_extraction import main as extract_sd_features
-from utils.sd_feature_extraction import parse_args as sd_parse_args
+# sys.path.append('gsplat_light')
+# from internal.entrypoints.gspl import cli as gspl_pipeline
+# sys.path.append('gsplat_light/utils')
+# from utils.sd_feature_extraction import main as extract_sd_features
+# from utils.sd_feature_extraction import parse_args as sd_parse_args
 
 def load_config(config_path="config.yaml"):
     """Load configuration from YAML file"""
@@ -50,19 +50,19 @@ def main():
     # Run SfM pipeline
     sfm_pipeline(config)
     
-    # Extract SD features
-    sd_args = sd_parse_args()
-    sd_args.image_dir = config['directories']['mvs_dir'] + "/images"
-    sd_args.output = config['directories']['sd_features_dir']
+    # # Extract SD features
+    # sd_args = sd_parse_args()
+    # sd_args.image_dir = config['directories']['mvs_dir'] + "/images"
+    # sd_args.output = config['directories']['sd_features_dir']
 
-    if not os.path.exists(sd_args.output):
-        extract_sd_features(args=sd_args)
+    # if not os.path.exists(sd_args.output):
+    #     extract_sd_features(args=sd_args)
         
-    # Run GSPL pipeline
-    gspl_output_path = os.path.join("/home/doer/hyperMapper/gsplat_light/outputs/", config['gspl']['args'][8])
-    if not os.path.exists(gspl_output_path):
-        print("Running GSPL Pipeline")
-        gspl_pipeline(args=config['gspl']['args'])
+    # # Run GSPL pipeline
+    # gspl_output_path = os.path.join("/home/doer/hyperMapper/gsplat_light/outputs/", config['gspl']['args'][8])
+    # if not os.path.exists(gspl_output_path):
+    #     print("Running GSPL Pipeline")
+    #     gspl_pipeline(args=config['gspl']['args'])
 
 if __name__ == "__main__":
     main()
