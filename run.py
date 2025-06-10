@@ -19,14 +19,17 @@ def load_config(config_path="config.yaml"):
 
 def sfm_pipeline(config):
     """Run the SfM pipeline with the given configuration"""
-    video_path = config['video']['input_path']
+    video_input = config['video']['video_input']
     image_dir = pathlib.Path(config['directories']['image_dir'])
     output_path = pathlib.Path(config['directories']['output_dir'])
     fps = config['video']['fps']
 
     # Extract frames from video
-    extract_frames(video_path, image_dir, fps)
-    
+    if video_input:
+        video_path = config['video']['input_path']
+        image_dir = config['video']['extracted_image_dir']
+        extract_frames(video_path, image_dir, fps)
+
     # Run Structure from Motion
     maps = run_sfm(image_dir=image_dir, output_path=output_path, is_dense=config['flags']['is_dense'])
     
