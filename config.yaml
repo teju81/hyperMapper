@@ -1,12 +1,15 @@
 # Video Processing Configuration
 video:
-  input_path: "swapnanil.mp4" #"/root/code/datasets/tanks_and_temples/videos/Courtroom/Courtroom.mp4"
+  input_path: "/root/code/datasets/tanks_and_temples/videos/Courtroom/Courtroom.mp4" #"/root/code/datasets/tanks_and_temples/videos/Courtroom/Courtroom.mp4" "swapnanil.mp4"
   fps: 2 # extract every n-th frame in the video or in other words divide video frame rate by this value
+  extracted_image_dir: "/root/code/output/extracted_frames"
+  video_input: false
+
 
 # Directory Configuration
 directories:
-  image_dir: "/root/code/output/extracted_frames"
-  output_dir: "/root/code/output/colmap_output"
+  image_dir: "/root/code/datasets/ARTGarage/conf_room_cp"
+  output_dir: "/root/code/output/ARTGarage/conf_room_cp/colmap_output"
   # mvs_dir: "output/mvs"
   # sd_features_dir: "output/mvs/SD"
 
