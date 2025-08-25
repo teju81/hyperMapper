@@ -1,17 +1,16 @@
 # Video Processing Configuration
 video:
-  input_path: "/root/code/extra2/datasets/tanks_and_temples/videos/Meetingroom.mp4" # "swapnanil.mp4" "watchtower.mp4"
+  input_path: "/root/code/extra3/datasets/tanks_and_temples/videos/Meetingroom.mp4" # "swapnanil.mp4" "watchtower.mp4"
   fps: 2 # extract every n-th frame in the video or in other words divide video frame rate by this value
-  extracted_image_dir: "/root/code/output/tanks_and_temples/videos/meeting_room_hypermapper/extracted_frames"
+  extracted_image_dir: "/root/code/output/colmap/tanks_and_temples/videos/meeting_room_hypermapper/extracted_frames"
   video_input: true
 
 
 # OUTPUT Directory Configuration
 directories:
-  image_dir: "/root/code/output/tanks_and_temples/videos/meeting_room_hypermapper"
-  output_dir: "/root/code/output/tanks_and_temples/videos/meeting_room_hypermapper/colmap"
-  mvs_dir: "/root/code/output/tanks_and_temples/videos/meeting_room_hypermapper/mvs"
-  sd_features_dir: "/root/code/datasets/tanks_and_temples/videos/meeting_room_hypermapper/mvs/SD"
+  image_dir: "/root/code/output/colmap/tanks_and_temples/videos/meeting_room_hypermapper"
+  output_dir: "/root/code/output/colmap/tanks_and_temples/videos/meeting_room_hypermapper/colmap"
+  mvs_dir: "/root/code/output/colmap/tanks_and_temples/videos/meeting_room_hypermapper/mvs"
 
 # Point Cloud Processing
 pointcloud:
