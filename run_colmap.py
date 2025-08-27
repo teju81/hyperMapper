@@ -18,12 +18,13 @@ def sfm_pipeline(config):
     image_dir = pathlib.Path(config['directories']['image_dir'])
     output_path = pathlib.Path(config['directories']['output_dir'])
     fps = config['video']['fps']
+    num_frames = config['video']['num_frames']
 
     # Extract frames from video
     if video_input:
         video_path = config['video']['input_path']
         image_dir = config['video']['extracted_image_dir']
-        extract_frames(video_path, image_dir, fps)
+        extract_frames(video_path, image_dir, fps, num_frames)
 
     # Run Structure from Motion
     maps = run_sfm(image_dir=image_dir, output_path=output_path, is_dense=config['flags']['is_dense'])
