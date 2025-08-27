@@ -14,20 +14,25 @@ def load_config(config_path="config.yaml"):
 
 def sfm_pipeline(config):
     """Run the SfM pipeline with the given configuration"""
-    video_input = config['video']['video_input']
-    image_dir = pathlib.Path(config['directories']['image_dir'])
-    output_path = pathlib.Path(config['directories']['output_dir'])
-    fps = config['video']['fps']
-    num_frames = config['video']['num_frames']
+    video_input = config['input']['video_input']
+    extract = config['input']['extract'] and False
 
     # Extract frames from video
     if video_input:
-        video_path = config['video']['input_path']
-        image_dir = config['video']['extracted_image_dir']
-        extract_frames(video_path, image_dir, fps, num_frames)
+        video_input_path = config['input']['video_input_path']
+        extracted_image_dir = config['input']['extracted_image_dir']
+        input_image_dir = extracted_image_dir
+        fps = config['input']['fps']
+        num_frames = config['input']['num_frames']
+        if extract:
+            extract_frames(video_input_path, extracted_image_dir, fps, num_frames)
+    else:
+        input_image_dir = pathlib.Path(config['colmap_directories']['image_dir'])
+
+    sfm_dir = pathlib.Path(config['colmap_directories']['sfm_dir'])
 
     # Run Structure from Motion
-    maps = run_sfm(image_dir=image_dir, output_path=output_path, is_dense=config['flags']['is_dense'])
+    maps = run_sfm(image_dir=input_image_dir, output_path=sfm_dir, is_dense=config['flags']['is_dense'])
     
     # Process point cloud
     process_pointcloud(
