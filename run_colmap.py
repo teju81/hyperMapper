@@ -36,7 +36,7 @@ def sfm_pipeline(config):
     
     # Process point cloud
     process_pointcloud(
-        output_path, 
+        sfm_dir, 
         view_pcd=config['flags']['view_pointcloud'],
         save_pcd=config['flags']['save_pointcloud'],
         filter_pcd=config['flags']['filter_pointcloud'],
