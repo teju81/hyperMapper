@@ -106,10 +106,11 @@ def process_pointcloud(output_path, view_pcd: bool = True, save_pcd: bool = True
     if view_pcd:
         visualize_sparse_pointcloud(pcd)
 
-def extract_frames(video_path, output_dir, fps):
+def extract_frames(video_path, output_dir, fps, num_frames):
     print(f"Starting frame extraction from {video_path}")
     print(f"Output directory: {output_dir}")
     print(f"Target FPS: {fps}")
+    print(f"Number of frames to extract: {num_frames}")
     
     os.makedirs(output_dir, exist_ok=True)
     cap = cv2.VideoCapture(video_path)
@@ -120,6 +121,7 @@ def extract_frames(video_path, output_dir, fps):
     video_fps = cap.get(cv2.CAP_PROP_FPS)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     frame_interval = int(video_fps / fps)
+    frame_interval = int(total_frames / num_frames)
     
     print(f"Video properties:")
     print(f"- Original FPS: {video_fps}")
