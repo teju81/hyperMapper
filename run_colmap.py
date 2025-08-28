@@ -7,6 +7,13 @@ import os
 import yaml
 import sys
 
+sys.path.append('gsplat_light')
+# from internal.entrypoints.gspl import cli as gspl_pipeline
+sys.path.append('gsplat_light/utils')
+from utils.sd_feature_extraction import main as extract_sd_features
+from utils.sd_feature_extraction import parse_args as sd_parse_args
+
+
 def load_config(config_path="config.yaml"):
     """Load configuration from YAML file"""
     with open(config_path, 'r') as f:
@@ -53,6 +60,15 @@ def main():
 
     # Run SfM pipeline
     sfm_pipeline(config)
+
+
+    # Extract SD features
+    sd_args = sd_parse_args()
+    sd_args.image_dir = config['colmap_directories']['mvs_dir'] + "/images"
+    sd_args.output = config['colmap_directories']['sd_features_dir']
+
+    if not os.path.exists(sd_args.output):
+        extract_sd_features(args=sd_args)
 
 if __name__ == "__main__":
     main()
