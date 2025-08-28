@@ -13,6 +13,7 @@ input:
 colmap_directories:
   sfm_dir: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/sparse"
   mvs_dir: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/mvs"
+  sd_features_directory: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/mvs/SD"
 
 # Point Cloud Processing
 pointcloud:
@@ -53,6 +54,6 @@ pointcloud:
 # Processing Flags
 flags:
   view_pointcloud: false
-  save_pointcloud: false
-  filter_pointcloud: false
+  save_pointcloud: true
+  filter_pointcloud: true
   is_dense: false
