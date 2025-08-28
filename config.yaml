@@ -13,7 +13,7 @@ input:
 colmap_directories:
   sfm_dir: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/sparse"
   mvs_dir: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/sparse/mvs"
-  sd_features_directory: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/sparse/mvs/SD"
+  sd_features_dir: "/root/code/output/colmap_outputs/tanks_and_temples/videos/meeting_room_hypermapper/SD"
 
 # Point Cloud Processing
 pointcloud:
