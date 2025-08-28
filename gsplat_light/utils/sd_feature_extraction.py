@@ -218,9 +218,9 @@ class OneStepSDPipeline(StableDiffusionPipeline):
 
 class SDFeaturizer:
     def __init__(self, sd_id='stabilityai/stable-diffusion-2-1', index=1):
-        unet = MyUNet2DConditionModel.from_pretrained(sd_id, subfolder="unet", use_safetensors=False)
-        onestep_pipe = OneStepSDPipeline.from_pretrained(sd_id, unet=unet, safety_checker=None, use_safetensors=False)
-        onestep_pipe.scheduler = DDIMScheduler.from_pretrained(sd_id, subfolder="scheduler", use_safetensors=False)
+        unet = MyUNet2DConditionModel.from_pretrained(sd_id, subfolder="unet", use_safetensors=True, torch_dtype=torch.float16)
+        onestep_pipe = OneStepSDPipeline.from_pretrained(sd_id, unet=unet, safety_checker=None, use_safetensors=True, torch_dtype=torch.float16)
+        onestep_pipe.scheduler = DDIMScheduler.from_pretrained(sd_id, subfolder="scheduler", use_safetensors=True)
         onestep_pipe.scheduler.set_timesteps(50)
         gc.collect()
         onestep_pipe = onestep_pipe.to("cuda")
@@ -236,7 +236,9 @@ class SDFeaturizer:
                 up_ft_index=[1],
                 ensemble_size=2, noise=None):
 
-        img_tensor = img_tensor.repeat(ensemble_size, 1, 1, 1).cuda()  # ensem, c, h, w
+        img_tensor = img_tensor.to(device='cuda', dtype=torch.float16)
+        
+        img_tensor = img_tensor.repeat(ensemble_size, 1, 1, 1)  # ensem, c, h, w
 
         prompt_embeds = self.pipe.encode_prompt(
             prompt=prompt,
@@ -251,15 +253,15 @@ class SDFeaturizer:
             prompt_embeds=prompt_embeds,
             deform=deform, noise=noise)
         fts = []
-        mx_shape = 0, 0
+        mx_shape = (0, 0)
         for i in up_ft_index:
             unet_ft = unet_ft_all['up_ft'][i]  # ensem, c, h, w
             unet_ft = unet_ft.mean(0, keepdim=True)  # 1,c,h,w
-            mx_shape = max(mx_shape[0], unet_ft.shape[-2]), max(mx_shape[0], unet_ft.shape[-1])
-            fts += [unet_ft]
+            mx_shape = max(mx_shape[0], unet_ft.shape[-2]), max(mx_shape[1], unet_ft.shape[-1])
+            fts.append(unet_ft)
         fts_resized = []
         for i in range(len(up_ft_index)):
-            fts_resized += F.interpolate(fts[i], size=(mx_shape[0], mx_shape[1]), mode='bilinear')
+            fts_resized.append(F.interpolate(fts[i], size=mx_shape, mode='bilinear', align_corners=False))
 
         unet_ft_all = torch.cat(fts_resized, dim=0)  # n,c,h,w
         return unet_ft_all, image
@@ -322,20 +324,25 @@ def main(args):
             t.set_description(image_relative_path)
 
             img = PIL.Image.open(image_path).convert('RGB')
-            img = img.resize((img_size, img_size))
-            img_tensor = (torch.tensor(np.array(img)) / 255.0 - 0.5) * 2
-            img_tensor = img_tensor.permute(2, 0, 1)
+            img = img.resize((img_size, img_size), resample=PIL.Image.BICUBIC)
+            img_np = np.array(img) / 255.0
+            img_tensor = torch.from_numpy(img_np).permute(2, 0, 1)
+            img_tensor = (img_tensor - 0.5) * 2
+            img_tensor = img_tensor.unsqueeze(0)  # [1,3,H,W]
 
-            fts, image = dift.forward(img_tensor,
+
+
+            fts, _ = dift.forward(img_tensor,
                                       prompt='',
-                                      ensemble_size=2,
+                                      ensemble_size=1,
                                       t=261,
-                                      up_ft_index=[1, ])
+                                      up_ft_index=[1])
+
 
             # save
             output_path = os.path.join(args.output, image_relative_path_without_ext + ".npy")
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            np.save(output_path, fts.cpu().numpy())
+            np.save(output_path, fts.cpu().to(torch.float16).numpy())
 
     print("Saved to `{}`".format(args.output))
 
